@@ -8,10 +8,8 @@ class PolyTreeNode
     end
 
     def parent=(node)
-        if node == nil
-            @parent = nil
-        else
-            @parent = node
+        @parent = node
+        unless node.nil? 
             node.children << self unless node.children.include?(self)
         end
     end
