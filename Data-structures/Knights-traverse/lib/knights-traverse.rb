@@ -5,8 +5,9 @@ class KnightPathFinder
     DELTAS = [[-1, 2], [-1, -2], [1, -2], [1, 2], [-2, 1], [-2, -1], [2, 1], [2, -1]]
 
     def initialize(starting_position)
-        @root_node = starting_position
-        # self.root_node
+        @start_pos = starting_position
+        @considered_positions = [starting_position]
+        @root_node = PolyTreeNode.new(starting_position)
     end
 
     def self.valid_moves(pos)
@@ -20,6 +21,15 @@ class KnightPathFinder
         end
         moves_array
     end
+
+    def new_move_positions(pos)
+        KnightPathFinder::valid_moves(pos) - @considered_positions
+    end
+
+    def build_move_tree
+        new_move_positions
+    end
+
 
 end
 
