@@ -2,12 +2,16 @@ require "/Users/andrewgehlot/Documents/App Academy/Aa-homeworks/Data-structures/
 
 class KnightPathFinder
 
+    attr_reader :root_node
+
     DELTAS = [[-1, 2], [-1, -2], [1, -2], [1, 2], [-2, 1], [-2, -1], [2, 1], [2, -1]]
 
     def initialize(starting_position)
         @start_pos = starting_position
         @considered_positions = [starting_position]
         @root_node = PolyTreeNode.new(starting_position)
+
+        # build_move_tree
     end
 
     def self.valid_moves(pos)
@@ -23,11 +27,23 @@ class KnightPathFinder
     end
 
     def new_move_positions(pos)
-        KnightPathFinder::valid_moves(pos) - @considered_positions
+        KnightPathFinder::valid_moves(pos)
+            .reject { |move| @considered_positions.include?(move) }
+            .each { |move| @considered_positions << move }
     end
 
     def build_move_tree
-        new_move_positions
+        nodes = [@root_node]
+        until nodes.empty?
+            el = nodes.shift
+
+            coords = el.value
+            new_move_positions(coords).each do |position|
+                next_node = PolyTreeNode.new(position)
+                el.add_child(next_node)
+                nodes << next_node
+            end
+        end
     end
 
 
