@@ -3,14 +3,17 @@ require_relative 'tic_tac_toe_node'
 class SuperComputerPlayer < ComputerPlayer
   def move(game, mark)
     game_state = TicTacToeNode.new(game.board, mark)
-    node = game_state.children.find { |child| child.winning_node?(mark) }
-    return node.prev_move_pos if node
-
-    node = game_state.children.find { |child| !child.losing_node?(mark) }
-
-    return node.prev_move_pos if node
-
-    raise "cannot find winning move"
+    game_state.children.each do |child|
+      if child.winning_node?(mark)
+        return child.prev_move_pos
+      end
+    end
+    game_state.children.each do |child|
+      if !child.losing_node?(mark)
+        return child.prev_move_pos
+      end
+    end
+    raise "cannot win"
   end
 end
 
