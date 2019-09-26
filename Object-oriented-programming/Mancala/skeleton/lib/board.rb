@@ -18,10 +18,10 @@ class Board
   end
 
   def valid_move?(start_pos)
-    if start_pos == 0
+    if start_pos < 0 || start_pos > 12
       raise "Starting cup is empty"
     end
-    valid_pos = (1..6).to_a + (7..12).to_a
+    valid_pos = (0..5).to_a + (7..12).to_a
     unless valid_pos.include?(start_pos)
       raise "Invalid starting cup"
     end
