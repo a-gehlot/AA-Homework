@@ -30,10 +30,10 @@ class Board
   def make_move(start_pos, current_player_name)
     num_stones = @cups[start_pos].count
     @cups[start_pos].clear
-    current_player_name == @name2 ? store_idx = 6 : store_idx = 13
+    current_player_name == @name1 ? store_idx = 6 : store_idx = 13
     while num_stones > 0
       index = (start_pos + 1) % @cups.length
-      if index == store_idx
+      if (store_idx == 6 && index == 13) || (store_idx == 13 && index == 6)
         start_pos += 1
         next
       end
@@ -42,11 +42,19 @@ class Board
       num_stones -= 1
     end
     render
-    self.next_turn(start_pos)
+    self.next_turn((start_pos) % cups.length)
   end
 
   def next_turn(ending_cup_idx)
     # helper method to determine whether #make_move returns :switch, :prompt, or ending_cup_idx
+    if ending_cup_idx == 6 || ending_cup_idx == 13
+      return :prompt
+    elsif @cups[ending_cup_idx].length == 1
+      return :switch
+    else
+      return ending_cup_idx
+    end
+
   end
 
   def render
