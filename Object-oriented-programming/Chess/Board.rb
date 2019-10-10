@@ -88,6 +88,19 @@ module Slideable
     end
 end
 
+module Stepable
+    def moves
+        x, y = @pos
+        moves = []
+        move_diffs.each do |dx, dy|
+            moves << [x + dx, y + dy]
+        end
+        moves
+    end
+end
+
+
+
 class Rook < Piece
     include Slideable
     def symbol
