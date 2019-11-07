@@ -45,5 +45,24 @@ describe "#my_transpose" do
 
     it "transposes between rows and columns" do
         expect(my_transpose(rows)).to eq(columns)
+        expect(my_transpose(columns)).to eq(rows)
+    end
+end
+
+describe "#stock_picker" do
+    it "selects days to buy and sell a stock" do
+        expect(stock_picker([0,1,2,3,4,5])).to eq([0,5])
+    end
+
+    it "does not sell before buying" do
+        expect(stock_picker([7,5,4,1,6])).to eq([3,4])
+    end
+
+    it "finds best days given multiple opportunities" do
+        expect(stock_picker([2,11,1,4,10,2])).to eq([2,4])
+    end
+
+    it "doesn't buy in a downtrend" do
+        expect(stock_picker([5,4,3,2,1])).to eq(nil)
     end
 end

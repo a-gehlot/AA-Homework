@@ -29,5 +29,21 @@ def my_transpose(array)
 
 end
 
+def stock_picker(array)
+    pair = nil
+    best_gain = 0
+    (0...array.count).each do |buy|
+          (buy + 1...array.count).each do |sell|
+            profit = array[sell] - array[buy]
+            unless profit < best_gain || profit < 0
+                best_gain = profit
+                pair = [buy, sell]
+            end
+        end
+    end
+    pair         
+
+end
+
 
 
