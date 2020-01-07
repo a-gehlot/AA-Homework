@@ -1,3 +1,6 @@
+require "benchmark"
+include Benchmark
+
 def windowed_max_range(array, window)
     current_max_range = nil
     i = 0
@@ -144,6 +147,10 @@ class MinMaxStackQueue
         @de_stack = MinMaxStack.new
     end
 
+    def size
+        @en_stack.size + @de_stack.size
+    end
+
     def empty?
         @en_stack.empty? && @de_stack.empty?
     end
@@ -194,12 +201,42 @@ def windowed_max_range_best(array, window)
     windowed_max_range
 end
 
+# def windowed_max_range_best(array, window)
+#     queue = MinMaxStackQueue.new
+#     best_range = nil
+
+#     array.each_with_index do |el, i|
+#         queue.enqueue(el)
+#         queue.dequeue if queue.size > window
+
+#         if queue.size == window 
+#             current_range = queue.max - queue.min
+#             best_range = current_range if !best_range || current_range > best_range
+#         end
+#     end
+
+#     best_range
+# end
+
+
+def random_arr(n)
+    array = Array.new(n) { rand(n) }
+    val = rand(0..n)
+    return array
+end
+
+Benchmark.benchmark(CAPTION, 7, FORMAT) do |x|
+    x.report("Original O(n^2):") { windowed_max_range(random_arr(1000000), 10000)}
+    x.report("Optimized O(n):") { windowed_max_range_best(random_arr(1000000), 10000)}
+end
 
 
 
 
 
-puts windowed_max_range_best([1, 0, 2, 5, 4, 8], 2) #== 4 # 4, 8
-puts windowed_max_range_best([1, 0, 2, 5, 4, 8], 3) #== 5 # 0, 2, 5
-puts windowed_max_range_best([1, 0, 2, 5, 4, 8], 4) #== 6 # 2, 5, 4, 8
-puts windowed_max_range_best([1, 3, 2, 5, 4, 8], 5) #== 6 # 3, 2, 5, 4, 8
+
+
+# puts windowed_max_range_best([1, 0, 2, 5, 4, 8], 2) #== 4 # 4, 8
+# puts windowed_max_range_best([1, 0, 2, 5, 4, 8], 3) #== 5 # 0, 2, 5
+# puts windowed_max_range_best([1, 0, 2, 5, 4, 8], 4) #== 6 # 2, 5, 4, 8
+# puts windowed_max_range_best([1, 3, 2, 5, 4, 8], 5) #== 6 # 3, 2, 5, 4, 8
